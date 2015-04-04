@@ -31,7 +31,7 @@ class UMA_BarcodePackingSlip_Model_Shipment extends UMA_BarcodePackingSlip_Model
 {
     public function getPdf($shipments = array())
     {
-		
+        
         $pdf = new Zend_Pdf();
         $style = new Zend_Pdf_Style();
         $style->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD), 10);
@@ -48,19 +48,23 @@ class UMA_BarcodePackingSlip_Model_Shipment extends UMA_BarcodePackingSlip_Model
             $this->insertAddress($page);
 
             /* Add head */
-			//$this->insertStoreAddress($page);
-			//echo 'Dinesh';die;
+            //$this->insertStoreAddress($page);
+            //echo 'Dinesh';die;
             $this->insertOrder($page, $order);
-			 
-			  
+             
+              
             
-			
-			
-            $this->insertDocumentNumber(
-                $page,
-                Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId()
-            );
-			/*$this->insertOrderTotal(
+            
+            // the text output of insertDocumentNumber is white. hence removed
+            // $this->insertDocumentNumber(
+            //     $page,
+            //     Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId());
+            $page->setFillColor(new Zend_Pdf_Color_GrayScale(0));
+            $this->_setFontRegular($page, 10);
+            $docHeader = $this->getDocHeaderCoordinates();
+            $page->drawText(Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId(), 35, $docHeader[1] - 15, 'UTF-8');
+            
+            /*$this->insertOrderTotal(
                 $page,
                 Mage::helper('sales')->__('Order Total Rs ') . $order->getBaseGrandTotal()
             ); */          
@@ -77,7 +81,7 @@ class UMA_BarcodePackingSlip_Model_Shipment extends UMA_BarcodePackingSlip_Model
           //  $page->drawText(Mage::helper('sales')->__('Packingslip # ') . $shipment->getIncrementId(), 35, 780, 'UTF-8');
 
             /* Add table */
-            $page->setFillColor(new Zend_Pdf_Color_RGB(0.93, 0.92, 0.92));
+            $page->setFillColor(new Zend_Pdf_Color_RGB(93, 92, 92));
             $page->setLineColor(new Zend_Pdf_Color_GrayScale(0.5));
             $page->setLineWidth(0.5);
 
